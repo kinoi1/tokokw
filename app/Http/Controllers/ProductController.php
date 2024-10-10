@@ -11,10 +11,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::getAllProducts();
-        // $Data =array(
-        //     "Data" => $products
-        // );
-        return view("form",compact('products'));
+        return view("product.index",compact('products'));
     }
 
     // Fungsi untuk menampilkan produk berdasarkan ID
@@ -25,28 +22,23 @@ class ProductController extends Controller
     }
 
     // Fungsi untuk update produk
-    public function update(Request $request, $id)
+    public function edit(Request $request, $id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::getById($id);
 
-        // Validasi input
-        // $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'description' => 'nullable|string',
-        //     'price' => 'required|numeric|min:0',
-        // ]);
+        // Periksa apakah produk ditemukan
+        if ($product) {
+            return response()->json([
+                'message' => 'Product found',
+                'product' => $product
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Product not found'
+            ], 404);
+        }
 
-        // Update produk di database
-        $product->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-        ]);
-
-        return response()->json([
-            'message' => 'Product updated successfully',
-            'product' => $product
-        ], 200);
+        
     }
 
     
@@ -59,12 +51,16 @@ class ProductController extends Controller
         //     'description' => 'nullable|string',
         //     'price' => 'required|numeric|min:0',
         // ]);
-
+        if ($request->productid == '') {
             $product = Product::insert($request->all());
-            return response()->json([
-                'message' => 'Product created successfully',
-                'product' => $product
-            ], 201);
+            return redirect()->route('product.index')
+            ->with('success', 'Product created successfully.');
+        } else {
+            // Jika productId ada, jalankan update
+            $result = Product::updateProduct($request->productid, $request->all());
+            return redirect()->route('product.index')
+            ->with('success', 'Product update successfully.');
+        }
     }
 
     // Fungsi untuk menghapus produk

@@ -28,6 +28,23 @@ class Product extends Model
     {
         return DB::table('product')->get();
     }
+    public static function getById($id)
+    {
+        return DB::table('product')->where('ProductID', $id)->first();
+    }
+
+    public static function updateProduct($productId, $data)
+    {
+
+       return DB::table('product')
+            ->where('ProductID', $productId)
+            ->update([
+                'Name' => $data['name'],
+                'Price' => $data['price'],
+                'Qty' => $data['qty'],
+            ]);
+        // var_dump(DB::listen());die;
+    }
 
     public static function deleteData($id)
     {

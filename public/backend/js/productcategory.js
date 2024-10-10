@@ -13,9 +13,9 @@ document.getElementById('toggleFormButton').onclick = function(event) {
 };
 
 // Function to delete a product
-function deleteProduct(productId, csrfToken) {
+function deleteCategory(categoryid, csrfToken) {
     if (confirm('Are you sure you want to delete this product?')) {
-        fetch(`/product/delete/${productId}`, {
+        fetch(`/category/delete/${categoryid}`, {
             method: 'DELETE',
             headers: {
                 'X-CSRF-TOKEN': csrfToken, // Menyertakan CSRF token
@@ -24,17 +24,17 @@ function deleteProduct(productId, csrfToken) {
         })
         .then(response => {
             if (response.ok) {
-                alert('Product deleted successfully');
+                alert('Category deleted successfully');
                 location.reload(); // Memuat ulang halaman untuk melihat perubahan
             } else {
-                alert('Failed to delete product');
+                alert('Failed to delete Category');
             }
         })
         .catch(error => console.error('Error:', error));
     }
 }
-function edit(productId, csrfToken) {
-    fetch(`/product/edit/${productId}`, {
+function edit(categoryid, csrfToken) {
+    fetch(`/category/edit/${categoryid}`, {
         method: 'GET', // Mengubah menjadi method GET
         headers: {
             'X-CSRF-TOKEN': csrfToken, // Menyertakan CSRF token jika diperlukan
@@ -48,14 +48,13 @@ function edit(productId, csrfToken) {
             console.log(data);
             a = data.product;
             // Mengisi form dengan data yang didapatkan dari server
-            $("[name='productid']").val(a.ProductID);
+            $("[name='productcategoryid']").val(a.ProductCategoryID);
             $("[name='name']").val(a.Name);
-            $("[name='price']").val(a.Price);
-            $("[name='qty']").val(a.Qty);
+            $("[name='code']").val(a.Code);
             $(document.getElementById('toggleFormButton')).data('trigger', 'edit').click();
             // Jika ada field lain, tambahkan di sini
         } else {
-            alert('Failed to load product data');
+            alert('Failed to load Category data');
         }
     })
     .catch(error => console.error('Error:', error));
