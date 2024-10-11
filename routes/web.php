@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\GuestController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,9 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 
 
@@ -31,6 +30,9 @@ Route::get('/category', [CategoryController::class, 'index'])->name('category.in
 Route::post('/category/save', [CategoryController::class,"save"]);
 Route::delete('/category/delete/{id}', [CategoryController::class, 'delete'])->name('product.delete');
 Route::get('/category/edit/{id}', [ProductController::class, 'edit'])->name('category.edit');
+
+
+Route::get('/', [GuestController::class, 'index'])->name('guest.index');
 
 
 Route::get('tes', function(){

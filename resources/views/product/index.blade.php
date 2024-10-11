@@ -18,6 +18,15 @@
                 <input type="text" id="name" name="name" required
                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
             </div>
+            <div>
+                <label for="mainOption" class="block text-sm font-medium text-gray-700">Category</label>
+                <select id="mainOption" name="productcategoryid" required class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                    <option value="">-- Pilih Category --</option>
+                    @foreach($category as $option)
+                        <option value="{{ $option->ProductCategoryID }}">{{ $option->Code }} - {{ $option->Name }}</option>
+                    @endforeach
+                </select>
+            </div>
 
             <!-- Input Harga -->
             <div class="mb-4">
@@ -31,6 +40,11 @@
                 <label for="qty" class="block text-sm font-medium text-gray-700">Quantity Produk</label>
                 <input type="number" id="qty" name="qty" required min="1"
                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
+            </div>
+
+            <div class="mb-4 w-1/4">
+                <label for="product_image" class="block text-sm font-medium text-gray-700">Upload Gambar</label>
+                <input class="dropify w-1/4" type="file" id="product_image" name="gambar" accept="image/*" >
             </div>
 
             <!-- Tombol Submit -->

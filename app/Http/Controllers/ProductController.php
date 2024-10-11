@@ -2,16 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Main;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 
 class ProductController extends Controller
 {
+    protected $main;
+
+    // Model di-inject melalui constructor
+    public function __construct(Main $main)
+    {
+        $this->main = $main;
+    }
+
     public function index()
     {
         $products = Product::getAllProducts();
-        return view("product.index",compact('products'));
+        $category = $this->main->getAllProductCategory();
+        return view("product.index",compact('products','category'));
     }
 
     // Fungsi untuk menampilkan produk berdasarkan ID
@@ -45,12 +55,20 @@ class ProductController extends Controller
     // Fungsi untuk menyimpan data produk baru
     public function save(Request $request)
     {
-        // Validasi input
         // $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'description' => 'nullable|string',
-        //     'price' => 'required|numeric|min:0',
+            // 'name' => 'required|string|max:255',
+            // 'price' => 'required|numeric|min:0',
+            // 'qty' => 'required|integer|min:1',
+            // 'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048' // Validasi gambar
         // ]);
+        if ($request->hasFile('gambar')) {
+            // Simpan file gambar dan ambil path-nya
+            $imagePath = $request->file('gambar')->store('gambar', 'public'); // Folder "product_images" di storage/public
+            $request->merge(['imagepath' => $imagePath]);
+        } else {
+            $imagePath = null; // Jika tidak ada gambar, set null
+        }
+
         if ($request->productid == '') {
             $product = Product::insert($request->all());
             return redirect()->route('product.index')

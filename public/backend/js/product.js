@@ -10,7 +10,11 @@ document.getElementById('toggleFormButton').onclick = function(event) {
         resetForm(); // Reset form saat ditampilkan
     }
     $(event.target).data('trigger', '');
+    $('.dropify').dropify();
 };
+$(document).ready(function(){
+    $('.dropify').dropify();
+});
 
 // Function to delete a product
 function deleteProduct(productId, csrfToken) {
@@ -49,6 +53,7 @@ function edit(productId, csrfToken) {
             a = data.product;
             // Mengisi form dengan data yang didapatkan dari server
             $("[name='productid']").val(a.ProductID);
+            $("[name='productcategoryid']").val(a.ProductCategoryID);
             $("[name='name']").val(a.Name);
             $("[name='price']").val(a.Price);
             $("[name='qty']").val(a.Qty);
